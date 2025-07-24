@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Agency</title>
+    <style>
+        body {
+            background-size: 100% 100%;
+            background-size: contain;
+            object-fit: contain;
+            z-index: -1;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url(image1.jpg);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            text-align: left;
+          /* background-attachment: fixed;
+            overflow: hidden;*/
+        }
+        .header {
+            position: absolute;
+            top: 20px;
+            left: 60px;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
+        .header span {
+            color: #fa642e;
+        }
+        .nav {
+            display: flex;
+            gap: 20px;
+            padding: 15px 60px;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            justify-content: flex-end;
+            position: absolute;
+            top: 0;
+            right: 60px;
+            left: 0;
+            background: transparent;
+        }
+        .nav {
+            display: flex;
+            gap: 20px;
+        }
+        .nav a {
+            text-decoration: none;
+            color:aliceblue;
+            font-weight: 400;
+        }
+        .nav a.active {
+            color: #ff6600;
+        }
+        .content {
+            position: absolute;
+            top: 45%;
+            transform: translateY(-50%);
+            width: 50%;
+            text-align: left;
+            margin-left: 25%;
+            color: white;
+            font-weight: bold;
+            text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.6);
+        }
+        .welcome {
+            font-size: 40px;
+            color: rgb(250, 100, 46);
+            margin-bottom: 5px;
+            text-align: left;
+            font-family: "Edwardian Script ITC";
+        }
+        .heading {
+            font-size: 50px;
+            font-weight: bold;
+            margin: 0;
+        }
+        .subtext {
+            font-size: 18px;
+            font-weight: normal;
+            margin-top: 10px;
+        }
+        .search-section {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
+            padding-left: 30%;
+        }
+        .search-box {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0px;    
+        }
+        .search-top {
+            display: flex;
+            gap: 5px;
+        }
+        .search-bottom {
+            display: flex;
+            gap: 0;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: white;
+            color: black;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.3s;
+            width: 150px;
+            height: 40px;
+        }
+        button:hover {
+            transform: scale(1.1);
+        }
+        .hotel-button {
+            background-color: rgb(250, 100, 46);
+            border-radius: 5px;
+        }
+        .hotel-button:hover, .search-button:hover {
+            background-color: white;
+            color: black;
+        }
+        .search-button {
+            background-color: rgb(250, 100, 46);
+        }
+        .search-tour-button {
+            background-color: white !important;
+            color: black;
+            border-radius: 5px;
+        }
+        .search-tour-button:hover {
+            background-color: rgb(250, 100, 46) !important;
+            color: white;
+        }
+        /* Next Button */
+.next-screen-btn {
+    position: fixed;
+    top: 50%;
+    right: 30px;
+    /*transform: translateY(-50%);*/
+    background-color: rgb(250, 100, 46);
+    color: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    /*transition: background-color 0.3s; /* Removed transform scaling */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+.page {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
+    transition: opacity 1.5s ease-in-out, transform 1.5s ease-in-out;
+    opacity: 0;
+    transform: translateX(100%);
+    
+    /* Prevent Background Image from Zooming */
+    background-size: cover;   /* Ensures full coverage */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed; /* Prevents zoom effect */
+}
+
+
+        /* Active Page (Visible) */
+        .page.active {
+            opacity: 1;
+            transform: translateX(0);
+            animation: gatherEffect 1.5s ease-in-out;
+        }
+
+        /* Fading Out Page */
+        .page.fade-out {
+            opacity: 0;
+            transform: translateX(-100%);
+        }
+
+        /* Gather Effect for Page Content */
+        @keyframes gatherEffect {
+            0% {
+                clip-path: polygon(-50% -50%, 150% -50%, 150% 150%, -50% 150%);
+                opacity: 0;
+            }
+            100% {
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+                opacity: 1;
+            }
+        }
+
+        /* Content Box */
+        .content {
+            position: absolute;
+            top: 45%;
+            transform: translateY(-50%);
+            width: 50%;
+            text-align: left;
+            margin-left: 25%;
+            color: white;
+            font-weight: bold;
+            text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.6);
+        }
+
+        .welcome {
+            font-size: 40px;
+            color: rgb(250, 100, 46);
+            margin-bottom: 5px;
+            text-align: left;
+            font-family: "Edwardian Script ITC";
+            opacity: 0;
+            animation: slideInLeft 1.5s ease-in-out forwards;
+        }
+
+        .heading {
+            font-size: 50px;
+            font-weight: bold;
+            margin: 0;
+            opacity: 0;
+            animation: slideInTop 1.5s ease-in-out 0.3s forwards;
+        }
+
+        .subtext {
+            font-size: 18px;
+            font-weight: normal;
+            margin-top: 10px;
+            opacity: 0;
+            animation: fadeIn 1.5s ease-in-out 0.6s forwards;
+        }
+
+        /* Animations */
+        @keyframes slideInLeft {
+            0% {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInTop {
+            0% {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* Next Button */
+.next-screen-btn {
+    position: fixed;
+    top: 50%;
+    right: 30px;
+   /* transform: translateY(-50%);*/
+    background-color: rgb(250, 100, 46);
+    color: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    /*transition: background-color 0.3s; /* Removed transform scaling */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+</style>
+</head>
+<body>
+    <header class="header">
+        Pacific <span>Travel Agency</span>
+    </header>
+    <nav class="nav">
+        <a href="#" class="active">Home</a>
+        <a href="#">About</a>
+        <a href="#">Destination</a>
+        <a href="#">Hotel</a>
+        <a href="#">Blog</a>
+        <a href="#">Contact</a>
+    </nav>
+    <div class="container">
+         <!-- Page 1 -->
+         <div id="page1" class="page active" style="background: url('image1.jpg') no-repeat center center/cover;">
+            <div class="content">
+                <div class="welcome">Welcome to Pacific</div>
+                <h1 class="heading">Discover Your Favorite<br>Place with Us</h1>
+                <p class="subtext">Travel to any corner of the world, without going around in circles</p>
+            </div>
+        </div>
+                <!-- Page 2 -->
+                <div id="page2" class="page" style="background: url('plane.jpg') no-repeat center center/cover;">
+                    <div class="content">
+                        <div class="welcome">Explore the World With Us</div>
+                        <h1 class="heading">Your Journey Begins Here</h1>
+                        <p class="subtext">Find your next adventure with ease</p>
+                    </div>
+                </div>
+        
+    
+        <!--<div id="page2" class="page" 
+             style="background: url('plane.jpg') no-repeat center center/cover;">
+            <!---<h1>Discover Your Favorite Places</h1>-->
+        </div>
+    </div>
+    
+
+    <!--<div class="content">
+        <div class="welcome">Welcome to Pacific</div>
+        <h1 class="heading">Discover Your Favorite<br>Place with Us</h1>
+        <p class="subtext">Travel to any corner of the world, without going around in circles</p>
+    </div>-->
+    <div class="search-section">
+        <div class="search-box">
+            <div class="search-top">
+                <button class="search-tour-button">Search Tour</button>
+                <button class="hotel-button">Hotel</button>
+            </div>
+            <div class="search-bottom">
+                <button>Destination</button>
+                <button>Check-in Date</button>
+                <button>Check-out Date</button>
+                <button>Price Limit</button>
+                <button class="search-button">Search</button>
+            </div>
+        </div>
+    </div>
+    <button class="next-screen-btn" onclick="openNextScreen()">→</button>
+    <script>
+        function openNextScreen() {
+            window.location.href = "screen2.html"; // Replace with your actual page
+        }    
+        let currentIndex = 0;
+        const pages = document.querySelectorAll(".page");
+
+        function switchScreens() {
+            const currentPage = pages[currentIndex];
+            currentPage.classList.remove("active");
+            currentPage.classList.add("fade-out");
+
+            currentIndex = (currentIndex + 1) % pages.length;
+            
+            const nextPage = pages[currentIndex];
+            setTimeout(() => {
+                currentPage.classList.remove("fade-out");
+                nextPage.classList.add("active");
+            }, 1500);
+        }
+
+        // Auto transition every 5 seconds
+        setInterval(switchScreens, 5000);
+    </script>
+</body>
+</html>
